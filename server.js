@@ -1,10 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const app=express()
+const bodyParser = require("body-parser");
+require('dotenv').config();
 
-app.use(bodyParser.json());
+const app = express();
 
-const uri = 'your-mongodb-uri';
+app.use(express.json()); 
+
+const uri = process.env.MONGODB_URI;
 
 async function connect() {
     try {
@@ -15,15 +18,13 @@ async function connect() {
     }
 }
 
-connect()
-
+connect();
 
 const routes = require("./routes");
-
-
 app.use("/api", routes);
 
 const port = process.env.PORT || 8000;
-app.listen(port,()=>{
+
+app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-})
+});
